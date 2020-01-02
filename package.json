@@ -2,10 +2,12 @@
   "name": "benbellick.github.io",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://benbellick.github.io",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0"
@@ -16,7 +18,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build -b master"
+    "deploy": "gh-pages -d build -b master",
+    "js-lint": "eslint src/**/*.js src/**/*.jsx",
+    "sass-lint": "stylelint \"src/**/*.css\"",
+    "lint-fix":  "eslint --fix src/**/*.js src/**/*.jsx",
+    "lint": "npm-run-all -c js-lint sass-lint"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -34,6 +40,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.1.1"
+    "eslint": "^6.8.0",
+    "gh-pages": "^2.1.1",
+    "stylelint": "^12.0.1",
+    "stylelint-config-standard": "^19.0.0"
   }
 }
