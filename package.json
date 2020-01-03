@@ -20,9 +20,11 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build -b master",
     "js-lint": "eslint src/**/*.js src/**/*.jsx",
-    "sass-lint": "stylelint \"src/**/*.css\"",
-    "lint-fix":  "eslint --fix src/**/*.js src/**/*.jsx",
-    "lint": "npm-run-all -c js-lint sass-lint"
+    "style-lint": "stylelint \"src/**/*.css\" \"src/**/*.scss\"",
+    "js-lint-fix": "eslint --fix src/**/*.js src/**/*.jsx",
+    "style-lint-fix": "stylelint \"src/**/*.css\" \"src/**/*.scss\" --fix",
+    "lint": "npm run js-lint || npm run style-lint",
+    "lint-fix": "npm run js-lint-fix || npm run style-lint-fix"
   },
   "eslintConfig": {
     "extends": "react-app"
