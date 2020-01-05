@@ -5,6 +5,8 @@ import  { App }  from './components/index.js';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
+//ReactDOM.render(<Terminal />, document.getElementById('root'));
+
 
 /*
  * If you want your app to work offline and load faster, you can change

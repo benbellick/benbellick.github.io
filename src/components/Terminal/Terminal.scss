@@ -1,0 +1,9 @@
+.Terminal {
+    background: $color-seaweed;
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border: 1px $color-turquoise-blue dashed;
+    font-family: 'Inconsolata', monospace;
+    color: $color-turquoise-blue;
+}
