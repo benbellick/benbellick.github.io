@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const ASCIIArt = (props) => (
-    <div className={`ASCIIArt ${props.className}`}>
-        {props.children.map(x => <p className="ascii-line"> {x} </p>)}
+    <div className={classNames('ASCIIArt', props.className)}>
+        {props.children}
     </div>
 );
 

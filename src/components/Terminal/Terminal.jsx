@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const Terminal = (props) => (
-    <div className = {`Terminal ${props.className}`}>
+    <div className = {classNames('Terminal', props.className)}>
         {props.children}
     </div>
 );

@@ -1,7 +1,6 @@
 .ASCIIArt {
     white-space: pre;
-    .ascii-line {
-        margin-bottom: 0px;
-        margin-top: 0px;
-    }
+    width: min-content;
+    margin: 0 auto;
+    padding: 20px;
 }
