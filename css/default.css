@@ -111,7 +111,6 @@ article .header {
 
 @media (min-width: 640px) {
   body {
-    width: 60rem;
     margin: 0 auto;
     padding: 0;
   }
