@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Hakyll Blog - Argument-Free Commands in Optparse-Applicative</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/solarized-dark.css" />
+    <link rel="stylesheet" href="../css/syntax.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="../">Ben Bellick's Site</a>
+      </div>
+      <nav>
+        <a href="../">Home</a>
+        <a href="../cv.html">CV</a>
+        <a href="../contact.html">Contact</a>
+	<a href="../photography.html">Photography</a>
+        <a href="../archive.html">Posts</a>
+      </nav>
+    </header>
+
+    <main role="main">
+      <h1>Argument-Free Commands in Optparse-Applicative</h1>
+      <article>
+    <section class="header">
+        Posted on May 19, 2023
+        
+            by Benjamin Bellick
+        
+    </section>
+    <section>
+        <h2 id="problem">Problem</h2>
+<p>I was recently working on a project of my own which uses <a href="https://hackage.haskell.org/package/optparse-applicative">Optparse-Applicative</a> for command-line parsing of options. However, I needed some way to call commands which have no arguments.
+Given my program conveniently titled <code>program</code> and commands titled <code>cmdA</code> and <code>cmdB</code>, I wanted to be able to call the following:</p>
+<pre class="console"><code>program cmdA
+program cmdB</code></pre>
+<p>This is with no hidden <em>optional</em> arguments whose result we throw out. I wanted the real thing, and I found myself unable to figure it out from the documentation.</p>
+<p>I will proceed by showing the simplest sample program which accomplishes this, along with an explanation of why it works.</p>
+<h2 id="answer">Answer</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Options.Applicative</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Command</span> <span class="ot">=</span> <span class="dt">CmdA</span> <span class="op">|</span> <span class="dt">CmdB</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ot">cmdParser ::</span> <span class="dt">Parser</span> <span class="dt">Command</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>cmdParser <span class="ot">=</span> subparser</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  (  command <span class="st">&quot;cmdA&quot;</span> (info cmdAParse <span class="fu">mempty</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;&gt;</span> command <span class="st">&quot;cmdB&quot;</span> (info cmdBParse <span class="fu">mempty</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>cmdAParse,<span class="ot"> cmdBParse ::</span> <span class="dt">Parser</span> <span class="dt">Command</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>cmdAParse <span class="ot">=</span> <span class="fu">pure</span> <span class="dt">CmdA</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>cmdBParse <span class="ot">=</span> <span class="fu">pure</span> <span class="dt">CmdB</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ot">main ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>main <span class="ot">=</span> greet <span class="op">=&lt;&lt;</span> execParser opts</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    opts <span class="ot">=</span> info cmdParser fullDesc</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ot">greet ::</span> <span class="dt">Command</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>greet (<span class="dt">CmdA</span>) <span class="ot">=</span> <span class="fu">putStrLn</span> <span class="st">&quot;running command A...&quot;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>greet (<span class="dt">CmdB</span>) <span class="ot">=</span> <span class="fu">putStrLn</span> <span class="st">&quot;running command B...&quot;</span></span></code></pre></div>
+    </section>
+</article>
+
+    </main>
+
+    <footer>
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>

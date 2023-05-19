@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/mononoki.min.css");
 @import url(http://fonts.googleapis.com/css?family=PT+Sans);
 @import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
 article,
@@ -162,7 +162,7 @@ html {
 }
 pre,
 code {
-  font-family: 'Inconsolata', sans-serif;
+  font-family: 'mononoki', sans-serif;
 }
 h1,
 h2,
@@ -187,7 +187,7 @@ body {
 }
 code {
   background-color: #073642;
-  padding: 2px;
+  /* padding: 2px; */
 }
 a {
   color: #b58900;
