@@ -133,3 +133,8 @@ article .header {
     font-size: 1.8rem;
   }
 }
+
+.open-to-work {
+    font-style: italic;
+    opacity: 0.7;
+}
