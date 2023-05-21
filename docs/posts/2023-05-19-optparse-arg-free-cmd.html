@@ -66,8 +66,8 @@ program cmdB</code></pre>
 <p>If it is unclear why this works, recall that a <code>Parser</code> is an applicative (it is a well-named library after all).
 As a reminder of what an applicative is, look no further than below:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> (<span class="dt">Functor</span> f) <span class="ot">=&gt;</span> <span class="dt">Applicative</span> f <span class="kw">where</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">	pure ::</span> a <span class="ot">-&gt;</span> f a</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ot">	(&lt;*&gt;) ::</span> f (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  pure ::</span> a <span class="ot">-&gt;</span> f a</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ot">  (&lt;*&gt;) ::</span> f (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</span></code></pre></div>
 <p>So, <code>pure</code> lifts the value <code>CmdA</code> of type <code>Command</code> to be a full-fledged instance of <code>Parser Command</code>.</p>
 <p>One valid question to ask is how does the parser know to parse for “cmdA” or “cmdB”? The answer is the first argument passed into the <code>command</code> function.
 If we instead defined <code>cmdParser</code> as below, our program’s commands would be “commandABC” and “commandDEF”:</p>
@@ -83,7 +83,7 @@ If we instead defined <code>cmdParser</code> as below, our program’s commands 
 <summary><a>Click Here for Dumb Rabbit Hole</a></summary>
 ## Extra
 What if we have an unruly amount of commands? We can make our lives a little more convenient with the following implementation.
-``` haskell
+``` Haskell
 import Options.Applicative
 
 data Command = CmdA
@@ -109,6 +109,8 @@ greet cmd = putStrLn $ "running command " ++ show cmd ++ "..."
 ```
 </details>
 --></p>
+<!--  LocalWords:  Optparse
+ -->
     </section>
 </article>
 
