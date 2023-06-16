@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Hakyll Blog - If It Quacks Like a Monad- CounterExamples</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/solarized-dark.css" />
+    <link rel="stylesheet" href="../css/syntax.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="../">Ben Bellick's Site</a>
+      </div>
+      <nav>
+        <a href="../">Home</a>
+        <a href="../cv.html">CV</a>
+        <a href="../contact.html">Contact</a>
+	<a href="../photography.html">Photography</a>
+        <a href="../archive.html">Posts</a>
+      </nav>
+    </header>
+
+    <main role="main">
+      <h1>If It Quacks Like a Monad- CounterExamples</h1>
+      <article>
+    <section class="header">
+        Posted on May 23, 2023
+        
+            by Benjamin Bellick
+        
+    </section>
+    <section>
+        <!--- Alternative title: Illegal monads? -->
+<h1 id="summary">Summary</h1>
+<p>The ubiquitous monad… surely another tutorial is not needed.
+Though here, I would like to do something slightly-different.
+When a mathematical definition is presented that initially seems kooky, a good practice is to <em>stress test</em> the definition by dropping bits and pieces and seeing that each component of the definition truly is required.
+Thus, here you will find a few examples which show that monad instances which <em>break the laws</em> are not the kinds of monads you’d want to use.</p>
+<h1 id="refresher">Refresher</h1>
+<p>Just as a reminder, here is the definition of a monad:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> <span class="dt">Monad'</span> m <span class="kw">where</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  (&gt;&gt;=)  ::</span> m a <span class="ot">-&gt;</span> (  a <span class="ot">-&gt;</span> m b) <span class="ot">-&gt;</span> m b</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ot">  (&gt;&gt;)   ::</span> m a <span class="ot">-&gt;</span>  m b         <span class="ot">-&gt;</span> m b <span class="co">--this can be defined in terms of the other two, and thus can be ignored</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">  return ::</span>   a                 <span class="ot">-&gt;</span> m a</span></code></pre></div>
+<p>For simplicity, the <code>Applicative</code> constraint has been removed, as has the declaration of
+<code>(&gt;&gt;)</code>. This latter choice is okay because it would have default definition:
+<code>m &gt;&gt; k = m &gt;&gt;= \_ -&gt; k</code>
+and here are the corresponding monad laws:</p>
+<ol type="1">
+<li><code>m &gt;&gt;= return     =  m</code> – right unit</li>
+<li><code>return x &gt;&gt;= f   =  f x</code> – left unit</li>
+<li><code>(m &gt;&gt;= f) &gt;&gt;= g  =  m &gt;&gt;= (\x -&gt; f x &gt;&gt;= g)</code> – associativity</li>
+</ol>
+<h1 id="counterexamples">Counterexamples</h1>
+<p>These counterexamples will be <em>evil</em> as the goal is to artificially construct examples which break our intuition.
+Lets consider the following datatype:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">State</span> <span class="ot">=</span> <span class="dt">Empty</span> <span class="op">|</span> <span class="dt">Full</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">MonadA</span> a <span class="ot">=</span> <span class="dt">M</span> a <span class="dt">State</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Monad'</span> <span class="dt">MonadA</span> <span class="kw">where</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">M</span> a <span class="dt">Empty</span>) <span class="op">&gt;&gt;=</span> f <span class="ot">=</span> <span class="dt">M</span> b <span class="dt">Full</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> <span class="dt">M</span> b _ <span class="ot">=</span> f a</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">M</span> a <span class="dt">Full</span>)  <span class="op">&gt;&gt;=</span> f <span class="ot">=</span> <span class="dt">M</span> b <span class="dt">Full</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> <span class="dt">M</span> b _ <span class="ot">=</span> f a</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> a <span class="ot">=</span> <span class="dt">M</span> a <span class="dt">Empty</span></span></code></pre></div>
+<p>We can think of this as a monad which maintains a context that is either
+<code>Empty</code> or <code>Full</code>.
+The context initially starts off <code>Empty</code> and then is made <code>Full</code> once an additional
+piece of data is added.</p>
+<p>Now here is the kicker: <em>this monad is illegal because it breaks <em>only</em> the first law.</em></p>
+<h2 id="unit-breaker">unit breaker</h2>
+    </section>
+</article>
+
+    </main>
+
+    <footer>
+      Site proudly generated by
+      <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+    </footer>
+  </body>
+</html>
