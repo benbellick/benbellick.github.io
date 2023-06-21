@@ -7,11 +7,12 @@ import           Hakyll
 --------------------------------------------------------------------------------
 config :: Configuration
 config = defaultConfiguration
-         { destinationDirectory = "docs"
+         { destinationDirectory = "docs",
+           ignoreFile = \_->False -- to catch .well-known
          }
 main :: IO ()
 main = hakyllWith config $ do
-    match "images/*" $ do
+    match ("images/*" .||. ".well-known/*" ) $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -61,7 +62,6 @@ main = hakyllWith config $ do
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateBodyCompiler
-
 
 --------------------------------------------------------------------------------
 postCtx :: Context String

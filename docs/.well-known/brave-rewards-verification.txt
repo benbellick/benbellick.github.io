@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: benbellick.github.io
+Token: 297c3a39c8ee6068f848179ede5b4d1731d229b69cb135c7c3e8c9ac32615b97
