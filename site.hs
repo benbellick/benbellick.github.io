@@ -8,11 +8,13 @@ import           Hakyll
 config :: Configuration
 config = defaultConfiguration
          { destinationDirectory = "docs",
-           ignoreFile = \_->False -- to catch .well-known
+           ignoreFile = const False -- to catch .well-known
          }
 main :: IO ()
 main = hakyllWith config $ do
-    match ("images/*" .||. ".well-known/*" ) $ do
+    match ("images/*" .||.
+           ".well-known/*" .||.
+           "_config.yml") $ do
         route   idRoute
         compile copyFileCompiler
 
