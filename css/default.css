@@ -4,13 +4,14 @@
   --olivine: #A0AF84;
   --magnolia: #F9F5FF;
   --coral-pink: #E08D79;
-  --perfume-haze: #F3EBF4
+  --perfume-haze: #F3EBF4;
 }
 
 html {
   font-size: 62.5%;
   color: var(--raisin-black);
   height: 100%;
+  width: 100%;
   font-family: sans-serif;
 }
 
@@ -40,12 +41,25 @@ header a {
 
 nav {
   display: flex;
+  width: 100%; /* needed for mobile view */
   flex-direction: column;
   font-weight: bolder;
   font-size: 2rem;
   text-transform: uppercase;
   box-shadow: inset -20px 5px 40px rgb(0 0 0 / 10%);
 }
+
+@media (max-width: 822px) {
+  body {
+    flex-direction: column;
+  }
+  nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 
 nav a {
   text-decoration: none;
@@ -54,7 +68,6 @@ nav a {
 
 main {
   width: 100%;
-  padding: 0 30pt;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -95,4 +108,8 @@ div.sourceCode {
   background-color: var(--perfume-haze);
   padding: 10pt 10pt;
   border-radius: 10pt;
+}
+
+div.content {
+  padding: 30pt;
 }
