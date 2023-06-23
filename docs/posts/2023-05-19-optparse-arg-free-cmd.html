@@ -32,8 +32,8 @@
         <h2 id="problem">Problem</h2>
 <p>I was recently working on a project of my own which uses <a href="https://hackage.haskell.org/package/optparse-applicative">Optparse-Applicative</a> for command-line parsing of options. However, I needed some way to call commands which have no arguments.
 Given my program conveniently titled <code>program</code> and commands titled <code>cmdA</code> and <code>cmdB</code>, I wanted to be able to call the following:</p>
-<pre class="console"><code>program cmdA
-program cmdB</code></pre>
+<pre class="shell"><code>&gt; program cmdA
+&gt; program cmdB</code></pre>
 <p>This is with no hidden <em>optional</em> arguments whose result we throw out. I wanted the real thing, and I found myself unable to figure it out from the documentation.</p>
 <h2 id="solution">Solution</h2>
 <p>The solution is to create a type constructor which takes no arguments, and then to lift the result via pure.</p>

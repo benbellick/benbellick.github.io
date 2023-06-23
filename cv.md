@@ -3,7 +3,7 @@ title: CV
 author: Benjamin Bellick
 ---
 
-# Profile
+## Profile
 
 Passionate software engineer with 2+ years of experience in C++ and an
 obsessive interest in functional programming and strongly typed systems.
@@ -12,14 +12,14 @@ languages such as OCaml, ML, and Purescript. Seeking opportunities to
 apply my knowledge and enthusiasm for functional programming. Travelled
 the world for 5 months, resulting in a gap in my resume.
 
-# Experience
+## Experience
 
-## Traveled the World; June 2022-Dec 2022
+### Traveled the World; June 2022-Dec 2022
 
 -   Visited 10 countries; experiences include working on a farm in
     Sweden and trekking in Nepal
 
-## Quantitative Software Engineer, TD Securities; New York, NY---Oct 2021-June 2022
+### Quantitative Software Engineer, TD Securities; New York, NY---Oct 2021-June 2022
 
 -   Designed and developed back-end pricing engine, empowering seamless
     pricing of a new inflation-hedging product and facilitating an
@@ -37,7 +37,7 @@ the world for 5 months, resulting in a gap in my resume.
 -   Designed, managed, and deployed DevOps pipeline for side project in
     Python, increasing development efficiency and the quality of testing
 
-## Rotational Analyst, TD Securities; New York, NY---June 2020-Oct 2021
+### Rotational Analyst, TD Securities; New York, NY---June 2020-Oct 2021
 
 -   Full-Stack Engineer for Hydra team (distributed computing team) in
     Elixir writing user access controller from scratch, including design
@@ -55,7 +55,7 @@ the world for 5 months, resulting in a gap in my resume.
 -   Achieved the highest attainable performance rating in the
     performance review process
 
-## Front End Development Intern, Snapsheet Inc; Chicago, IL---Jun 2019-Aug 2019
+### Front End Development Intern, Snapsheet Inc; Chicago, IL---Jun 2019-Aug 2019
 
 -   Developed a UI component library in React.js by translating UI
     elements from mock-ups into reusable components
@@ -67,7 +67,7 @@ the world for 5 months, resulting in a gap in my resume.
     presentation, which can be accessed
     [here](https://s3.amazonaws.com/snapkit/qa/KIT-13--DatePicker/uikit-next-storybook/index.html?path=/story/alert--standard)
 
-## Development Intern, Saggezza; Chicago, IL---Jun 2018-Aug 2018
+### Development Intern, Saggezza; Chicago, IL---Jun 2018-Aug 2018
 
 -   Designed and developed a user-friendly full-stack application to
     streamline employee onboarding processes
@@ -82,9 +82,9 @@ the world for 5 months, resulting in a gap in my resume.
     interface, enhancing the overall onboarding experience for new
     employees
 
-# Projects
+## Projects
 
-## Research: Step-Indexed Logical Relation for Recursive Lambda Calculus (Agda)
+### Research: Step-Indexed Logical Relation for Recursive Lambda Calculus (Agda)
 
 -   Learned Agda via [PLFA](https://plfa.github.io)
 -   Question posed by Professor Peter Thiemann and supervised by Philip
@@ -98,7 +98,7 @@ the world for 5 months, resulting in a gap in my resume.
 -   Currently ongoing
 -   IN PROGRESS
 
-## Scheme Evaluator (Haskell)
+### Scheme Evaluator (Haskell)
 
 -   Found [here](https://github.com/benbellick/SchemeRepl)
 -   Command line program which interprets the Scheme dialect of lisp
@@ -109,7 +109,7 @@ the world for 5 months, resulting in a gap in my resume.
     [parsec](https://hackage.haskell.org/package/parsec) library into
     AST, variable assignment, and error handling
 
-## Portfolio (Haskell)
+### Portfolio (Haskell)
 
 -   Found [here](https://github.com/benbellick/Portfolio)
 -   A command line utility used to help users follow a consistent
@@ -118,7 +118,7 @@ the world for 5 months, resulting in a gap in my resume.
     [Optparse-Applicative](https://hackage.haskell.org/package/optparse-applicative)
 -   Makes use of maybe monad transformer
 
-## Software Audio Synthesizer (C++)
+### Software Audio Synthesizer (C++)
 
 -   Found [here](https://github.com/benbellick/SimpleSynth)
 -   A software synthesizer implementing wave table synthesis in C++ from
@@ -126,7 +126,7 @@ the world for 5 months, resulting in a gap in my resume.
 -   Self-taught audio synthesis techniques
 -   Includes efficient lookup-table oscillator implementation
 
-## English Vocab Learning Tool (Python)
+### English Vocab Learning Tool (Python)
 
 -   Found [here](https://github.com/benbellick/KoVocab)
 -   Extract saved vocabulary words from Kobo eReader device and auto
@@ -134,19 +134,19 @@ the world for 5 months, resulting in a gap in my resume.
 -   Makes use of [NLTK](https://www.nltk.org) to lemmatize words into
     standard form
 
-## Personal Website / Blog
+### Personal Website / Blog
 
 -   IN PROGRESS
 
-## OSS Contributions
+### OSS Contributions
 
 -   Contributed to [hlint](https://github.com/ndmitchell/hlint), a piece
     of software to assist Haskell users in writing idiomatic code
 -   IN PROGRESS
 
-# Education
+## Education
 
-## Columbia University; New York, NY; Sept 2016-May 2020
+### Columbia University; New York, NY; Sept 2016-May 2020
 
 --- B.A in Mathematics and Computer Science, 2020 (GPA: 3.84)
 
@@ -157,7 +157,7 @@ the world for 5 months, resulting in a gap in my resume.
     -   General math courses
 -   Dean\'s list 7/8 semesters
 
-# Skills
+## Skills
 
 -   Languages
     -   C++
@@ -181,7 +181,7 @@ the world for 5 months, resulting in a gap in my resume.
     -   Category Theory
     -   OSS
 
-# Contact
+## Contact
 
 -   Brooklyn, NY
 -   \(312\) 618-2528

@@ -75,7 +75,8 @@ main {
 }
 
 footer {
-  padding: 1.2rem 0;
+  padding: 1.2rem 1.2rem;
+  margin: 0 30pt;
   border-top: 0.2rem solid var(--raisin-black);
   font-size: 1.2rem;
 }
@@ -89,8 +90,13 @@ li {
 }
 
 h1 {
-  font-size: 2.8rem;
+  background-color: var(--alice-blue);
+  padding: 2rem;
+  border-radius: 10pt;
+  font-size: 3rem;
   font-weight: bold;
+  text-align: center;
+  width: fit-content;
 }
 
 h2 {
@@ -114,9 +120,9 @@ article .header {
 
 div.sourceCode {
   font-family: monospace;
-  background-color: var(--perfume-haze);
-  padding: 10pt 10pt;
+  padding: 10pt;
   border-radius: 10pt;
+  background-color: var(--perfume-haze);
 }
 
 div.content {
@@ -125,11 +131,11 @@ div.content {
 
 code {
   display: inline-block;
+  background-color: var(--perfume-haze);
   width: fit-content;
 }
 
 code:not(.sourceCode) {
-  background-color: var(--alice-blue);
   padding: .5pt 3pt;
   border-radius: 3pt;
 }
