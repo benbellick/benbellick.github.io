@@ -5,6 +5,7 @@
   --magnolia: #F9F5FF;
   --coral-pink: #E08D79;
   --perfume-haze: #F3EBF4;
+  --alice-blue: #DEE8F8;
 }
 
 html {
@@ -79,6 +80,14 @@ footer {
   font-size: 1.2rem;
 }
 
+p {
+  line-height: 1.3em;
+}
+
+li {
+  margin: 10px;
+}
+
 h1 {
   font-size: 2.8rem;
   font-weight: bold;
@@ -113,3 +122,15 @@ div.sourceCode {
 div.content {
   padding: 30pt;
 }
+
+code {
+  display: inline-block;
+  width: fit-content;
+}
+
+code:not(.sourceCode) {
+  background-color: var(--alice-blue);
+  padding: .5pt 3pt;
+  border-radius: 3pt;
+}
+
