@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ben's Blog - Breaking the Law (Pt. 1): Illegal Functors</title>
+    <link rel="stylesheet" href="../css/default.css" />
+    <link rel="stylesheet" href="../css/syntax.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="../">Home</a>
+        <a href="../cv.html">CV</a>
+        <a href="../contact.html">Contact</a>
+	<a href="../photography.html">Photography</a>
+        <a href="../archive.html">Posts</a>
+      </nav>
+    </header>
+    <main role="main">
+      <div class="content">
+	<h1>Breaking the Law (Pt. 1): Illegal Functors</h1>
+	<article>
+    <section class="header">
+        Posted on July  4, 2023
+        
+            by Benjamin Bellick
+        
+    </section>
+    <section>
+        <!--- Alternative title: Illegal monads? -->
+<h2 id="summary">Summary</h2>
+<p>The ubiquitous monad… surely another tutorial is not needed.
+Though here, I would like to do something slightly-different.
+When a mathematical definition is presented that initially seems kooky, a good practice is to <em>stress test</em> the definition by dropping bits and pieces and seeing that each component of the definition truly is required.
+Thus, here you will find a few examples which show that monad instances which <em>break the laws</em> are not the kinds of monads you’d want to use.</p>
+<h2 id="refresher">Refresher</h2>
+<p>Just as a reminder, here is the <a href="https://wiki.haskell.org/Functor">definition of a functor</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> <span class="dt">Functor</span> f <span class="kw">where</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  fmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</span></code></pre></div>
+<p>Now, any proper functor must satisfy the following laws:</p>
+<ol type="1">
+<li><code>fmap id = id</code></li>
+<li><code>fmap (g . h) = fmap g . fmap h</code></li>
+</ol>
+<h2 id="counterexamples">Counterexamples</h2>
+<p>These counterexamples will be <em>evil</em> as the goal is to artificially construct examples which break our intuition.</p>
+<h3 id="dual-demolition">Dual Demolition</h3>
+<p>To begin with, here is an example which breaks both laws.
+Below is its definition:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Func1</span> a <span class="ot">=</span> <span class="dt">F1</span> [a]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Functor</span> <span class="dt">Func1</span> <span class="kw">where</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmap</span> f (<span class="dt">F1</span> (x<span class="op">:</span>xs)) <span class="ot">=</span> <span class="dt">F1</span> (ys <span class="op">&lt;&gt;</span> [y])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>	<span class="kw">where</span> <span class="dt">F1</span> ys <span class="ot">=</span> <span class="fu">fmap</span> f (<span class="dt">F1</span> xs)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>		  y <span class="ot">=</span> <span class="fu">fmap</span> f x</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmap</span> f (<span class="dt">F1</span> []) <span class="ot">=</span> <span class="dt">F1</span> []</span></code></pre></div>
+<p>If it is not immediately obvious what is happening here,
+let me give a brief explanation.
+This instance is essentially just like the traditional list functor
+except that it reverses the list as well.
+So, <code>f</code> is applied to each element of the list, and the list is returned wrapped in the functor, but backwards.</p>
+<h4 id="law-1">Law 1</h4>
+<p><code>fmap id (F1 [1,2]) = F1 [2,1]</code>, so the first law is broken.</p>
+<h4 id="law-2">Law 2</h4>
+<p>If you take both <code>g</code> and <code>h</code> as <code>id</code>, the same counter example applies:
+<code>(fmap id . fmap id) (F1 [1,2]) = F1 [1,2] \= F1 [2,1] = fmap id (F1 [1,2])</code>.</p>
+<h4 id="discussion">Discussion</h4>
+<p>What makes this functor <em>bad</em>?
+Functors can be thought of as values inside of boxes, and <code>fmap</code> allows us to reach into those boxes and
+alter the contents of the box without changing the shape of the box.
+This implementation of a <code>Functor</code> breaks this rule by changing the order of the contents of the box.</p>
+<h3 id="identity-disrupter">Identity Disrupter</h3>
+<p>Now, lets take a look at an instance of <code>Functor</code> which breaks the
+first law, but not the second.
+Lets consider the following datatype:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">State</span> <span class="ot">=</span> <span class="dt">Empty</span> <span class="op">|</span> <span class="dt">Full</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Func2</span> a <span class="ot">=</span> <span class="dt">F2</span> a <span class="dt">State</span> <span class="kw">deriving</span> <span class="dt">Show</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">instance</span> <span class="dt">Functor</span> <span class="dt">Func2</span> <span class="kw">where</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmap</span> f (<span class="dt">F2</span> a _) <span class="ot">=</span> <span class="dt">F2</span> (f a) <span class="dt">Full</span></span></code></pre></div>
+<h4 id="law-1-1">Law 1</h4>
+<p>It is easy to see that the first law will be broken.
+<code>fmap id (F2 0 Empty) = F2 0 Full</code>, so <code>fmap id /= id</code>.</p>
+<h4 id="law-2-1">Law 2</h4>
+<p>The second law does indeed hold, though it may be slightly more involved to show this.</p>
+<pre><code>fmap (f . g) (F2 a s) = F2 ((f . g) a) Full
+fmap f . fmap g (F2 a s) = fmap f $ F2 (g a) Full = F2 (f (g a)) Full</code></pre>
+<h4 id="discussion-1">Discussion</h4>
+<p>Now, what makes this functor <em>bad</em>?
+The problem here is similar.
+Our implementation of <code>fmap</code> alters the box.</p>
+<h3 id="distributivity-destroyer">Distributivity Destroyer</h3>
+<p>And now, is there a functor instance that breaks the second law but not the first law?
+After a ceremonious <em>beating-of-thy-head-against-the-wall</em>,
+I learned that… it is impossible.<br />
+</p>
+<p><strong>What?</strong><br />
+</p>
+<p>Yes, impossible.<br />
+Or better to say that it is not possible in the way I imagined.</p>
+<p>The problem is that the first functor law actually <strong>implies</strong> the second<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.
+How can this be so?
+The above referenced post goes into detail, but I will summarize the argument here.
+The answer is the so called “free theorem” for <code>fmap</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.
+For details, see the reference, but in summary, we can generate
+a theorem about a function given its type.
+To derive it yourself, read the paper,
+but to derive it automatically, just ask <a href="https://wiki.haskell.org/Lambdabot">lambdabot</a>!</p>
+<pre class="console"><code>&lt;me&gt; @free fmap :: (a -&gt; b) -&gt; (F a -&gt; F b)
+&lt;lambdabot&gt; g . h = k . f =&gt; $map_F g . fmap h = fmap k . $map_F f</code></pre>
+<p>Now, supposed the first law holds, i.e. <code>fmap id = id</code>.
+Let <code>h = id</code> and <code>f = id</code>.
+Then the above theorem tells us that
+<code>g = k =&gt; $map_F g = fmap k =&gt; $map_F g = fmap g =&gt; $map_F = fmap</code>.
+Okay, so now we can drop the use of <code>$map_F</code> and just use <code>fmap</code>.
+Let <code>f = id</code>, and <code>k = g . h</code>.
+Then our theorem preciesely tells us that
+<code>fmap g . fmap h = fmap (g . h)</code>, i.e. the second functor law!</p>
+<h3 id="indulgent-inquiry">Indulgent Inquiry</h3>
+<a-custom-element>
+<p class="deemphasize">
+Note: This section is optional and will be slightly more advanced
+</p>
+<p></a-custom-element></p>
+<p>Okay, so now we have found that no instance of <code>Functor</code> could possibly break the second
+law while maintaining the first.
+But there is one last interesting exploration to consider.
+Is there a functor such that an application of <code>fmap</code> <em>collapses</em> elements while still following
+both the functor laws?
+Our intuition so far is that the functor leaves the box unchanged while alterting its contents.
+What if our “box” were a set?
+Then an application of <code>fmap</code> with a function <code>f</code> that is <strong>not</strong> injective would allow a
+box-change.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://www.schoolofhaskell.com/user/edwardk/snippets/fmap">Edward Kmett’s relevant blog post</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf">Theorems for Free by P. Wadler</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+    </section>
+</article>
+
+      </div>
+      <footer>
+	Site proudly generated by
+	<a href="http://jaspervdj.be/hakyll">Hakyll</a>
+      </footer>
+    </main>
+  </body>
+</html>
