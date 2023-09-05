@@ -6,6 +6,7 @@
   --coral-pink: #E08D79;
   --perfume-haze: #F3EBF4;
   --alice-blue: #DEE8F8;
+  --platinum: #E9ECEA;
 }
 
 html {
@@ -89,13 +90,23 @@ li {
   margin: 10px;
 }
 
-h1 {
+h1.title {
   background-color: var(--alice-blue);
   padding: 2rem;
   border-radius: 10pt;
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
+  width: fit-content;
+}
+
+h1 {
+  background-color: var(--platinum);
+  padding: 1.2rem;
+  border-radius: 10pt;
+  font-size: 2.5rem;
+  font-weight: bolder;
+  text-alignt: center;
   width: fit-content;
 }
 
@@ -118,25 +129,18 @@ article .header {
   opacity: 0.7;
 }
 
-div.sourceCode {
-  font-family: monospace;
+pre {
   padding: 10pt;
   border-radius: 10pt;
+  background-color: var(--perfume-haze);
+  overflow-x: auto;
+}
+
+code {
   background-color: var(--perfume-haze);
 }
 
 div.content {
   padding: 30pt;
+  width: 800pt;
 }
-
-code {
-  display: inline-block;
-  background-color: var(--perfume-haze);
-  width: fit-content;
-}
-
-code:not(.sourceCode) {
-  padding: .5pt 3pt;
-  border-radius: 3pt;
-}
-
